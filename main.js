@@ -27,4 +27,8 @@ mongoose
     .connect(process.env.NODE_ENV=="development"?process.env.MONGODB_URI: process.env.MONGODB_URI_dep)
     .then(() => console.log('Done'))
 
-app.listen(process.env.PORT)
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
