@@ -19,6 +19,7 @@
     "multer": "^2.2.0",
     "nod": "^0.2.0",
     "zod": "^4.4.3",
-    "bcryptjs": "^3.0.2"
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
