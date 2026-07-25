@@ -24,7 +24,7 @@ app.use(notFound);
 
 app.use( errorHandler )
 mongoose
-    .connect(process.env.NODE_ENV=="development"?process.env.MONGODB_URI: process.env.MONGODB_URI_dep)
+    .connect(process.env.NODE_ENV == "development"?process.env.MONGODB_URI: process.env.MONGODB_URI_dep)
     .then(() => console.log('Done'))
 
     const PORT = process.env.PORT || 5000;
