@@ -89,7 +89,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
           />
         </div>
         <Button 
-          onClick={( )=> navigate("/dashboard/sales")}
+          onClick={( )=> navigate("/sales")}
           className="py-7 px-6 text-lg rounded-2xl shadow-md flex items-center gap-2 whitespace-nowrap"
         >
           <ShoppingBag className="h-5 w-5" />
