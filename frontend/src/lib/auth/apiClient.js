@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
 
 const api = axios.create({
-  baseURL: "https://product-mern-zc8c.onrender.com",
+  baseURL: "https://product-mern-zc8c.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },

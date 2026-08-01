@@ -34,7 +34,7 @@ app.use(
   cors({
     origin: process.env.NODE_ENV === "production" 
       ? process.env.CLIENT_URL
-      : ["http://localhost:5173", "https://product-mern-zc8c.onrender.com"],
+      : ["http://localhost:5173", "https://product-mern-zc8c.onrender.com/api"],
   })
 );
 
