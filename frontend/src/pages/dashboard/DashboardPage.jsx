@@ -1,4 +1,4 @@
-import DashboardHeader from "@components/dashboard/DashboardHeader";
+import DashboardHeader from "@components/Dashboard/DashboardHeader";
 import ProductForm from "@components/Product/ProductForm";
 import ProductList from '@components/Product/ProductList';
 
