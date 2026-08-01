@@ -24,7 +24,6 @@ const SalesPage = () => {
   const { data: sales = [], isLoading, isError, error } = useQuery({
     queryKey: ['sales', isAdmin ? 'allsales' : 'mysales'],
     queryFn: async () => {
-
       const endpoint = isAdmin ? '/sales/allsales' : '/sales/mysales';
       
       const response = await api.get(endpoint, {

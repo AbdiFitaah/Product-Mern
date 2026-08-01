@@ -8,6 +8,7 @@ import { Badge } from "../ui/badge";
 
 import ProductCard from "./ProductCard";
 import useAuthStore from "../../lib/store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,6 +39,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
     ),
   };
 
+  const navigate = useNavigate();
   const ProductGrid = ({ products, emptyMessage }) => {
     if (products.length === 0) {
       return (
@@ -87,7 +89,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
           />
         </div>
         <Button 
-          onClick={onSalesClick}
+          onClick={( )=> navigate("/dashboard/sales")}
           className="py-7 px-6 text-lg rounded-2xl shadow-md flex items-center gap-2 whitespace-nowrap"
         >
           <ShoppingBag className="h-5 w-5" />
