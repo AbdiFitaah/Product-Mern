@@ -33,8 +33,8 @@ app.use(Logger);
 app.use(
   cors({
     origin: process.env.NODE_ENV === "production" 
-      ? process.env.CLIENT_URL // Geliso URL-ka Render ee Frontend-ka
-      : ["http://localhost:5173"],
+      ? process.env.CLIENT_URL
+      : ["http://localhost:5173", "https://product-mern-zc8c.onrender.com"],
   })
 );
 
