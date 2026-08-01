@@ -7,19 +7,26 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "dev": "nodemon main.js",
-    "start": "node main.js"
+    "server": "nodemon backend/main.js",
+    "start": "node backend/main.js",
+    "client": "npm run dev --prefix frontend",
+    "dev" : "concurrently  \"npm run server\"  \"npm run client\" ",
+    "build": "npm install && npm install --prefix frontend --production=false && npm run build --prefix frontend"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
     "mongeese": "^0.0.1",
     "mongoose": "^9.7.3",
     "multer": "^2.2.0",
     "nod": "^0.2.0",
-    "zod": "^4.4.3",
-    "bcryptjs": "^3.0.2",
-    "jsonwebtoken": "^9.0.2"
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
   }
 }
