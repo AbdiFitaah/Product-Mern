@@ -1,4 +1,4 @@
-import Category from "../Models/Category.js";
+import Category from "../Models/category.js";
 export const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
