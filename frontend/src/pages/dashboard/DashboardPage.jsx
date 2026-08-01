@@ -1,12 +1,12 @@
-import DashboardHeader from "../../components/dashboard/DashboardHeader";
-import ProductForm from "../../components/Product/ProductForm";
-import ProductList from '../../components/Product/ProductList';
+import DashboardHeader from "@components/dashboard/DashboardHeader";
+import ProductForm from "@components/Product/ProductForm";
+import ProductList from '@components/Product/ProductList';
 
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import React, { useState } from "react";
 
-import api from "../../lib/auth/apiClient";
+import api from "@lib/auth/apiClient";
 
 const DashboardPage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
