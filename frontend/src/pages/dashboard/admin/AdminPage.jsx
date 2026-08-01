@@ -1,5 +1,5 @@
-import DashboardWelcome from "..@components/dashboard/DashboardWelcome";
-import DashboardHeader from "..@components/dashboard/DashboardHeader";
+import DashboardWelcome from "..@components/Dashboard/DashboardWelcome";
+import DashboardHeader from "..@components/Dashboard/DashboardHeader";
 import ProductForm from "..@components/Product/ProductForm";
 import ProductList from '..@components/Product/ProductList';
 
