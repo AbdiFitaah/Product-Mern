@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path"; // 👈 Sidaan uga muhiimsan
+import { fileURLToPath } from "url"; // 👈 Sidaan uga muhiimsan
+
 import { Logger } from "./middlewares/Logger.js";
 import { notFound } from "./middlewares/notFound.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -18,16 +21,24 @@ dotenv.config();
 
 const app = express();
 
+// Path Setup ee ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
 app.use(express.json());
 app.use(Logger);
+
+// CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: process.env.NODE_ENV === "production" 
+      ? process.env.CLIENT_URL // Geliso URL-ka Render ee Frontend-ka
+      : ["http://localhost:5173"],
   })
 );
 
-// Routes
+// API Routes
 app.use("/api/users", router);
 app.use("/api/auth", authrouter);
 app.use("/api/admin", adminrouter);
@@ -35,26 +46,25 @@ app.use("/api/product", productRoute);
 app.use("/api/sales", salerouter);
 app.use("/api/category", categoryrouter);
 
+// Production Static Files Setup
+if (process.env.NODE_ENV === "production") {
+  // Waxaa loo adeegeyaa frontend Build-ka
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  // Catch-all route oo lagu soo celinayo React/Vite index.html
+  app.get(/.*/, (req, res) => {
+    // 👈 Halkan waxaa loo beddelay res.sendFile
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html")); 
+  });
+}
+
+// Global Error Handlers (Waa inay ka dambeeyaan Routes-ka)
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-
-if (process.env.NODE_ENV === "production") {
-
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-  app.get(/.*/, (req, res) => {
-      res.send(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
-  })
-}
-
-
-
-
+// Connect Database & Start Server
 mongoose
   .connect(
     process.env.NODE_ENV === "development"
@@ -65,10 +75,10 @@ mongoose
     console.log("✅ MongoDB Connected");
 
     app.listen(PORT, () => {
-      console.log(` Server is running on port ${PORT}`);
+      console.log(`🚀 Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error(" MongoDB Connection Failed");
+    console.error("❌ MongoDB Connection Failed:", err);
     process.exit(1);
   });
