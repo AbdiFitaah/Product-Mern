@@ -1,4 +1,4 @@
-import { Package, Search, ShoppingBag, Sparkles, Layers } from "lucide-react";
+import { Package, Search, ShoppingBag } from "lucide-react";
 import React, { useState } from "react";
 
 import { Input } from "../ui/input";
@@ -15,28 +15,43 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
 
   const user = useAuthStore((state) => state.user);
 
+  // Helper function oo si sax ah u ganta magaca category-ga (ID ama String ama Object)
+  const getCategoryIdOrName = (product) => {
+    if (!product?.category) return "";
+    if (typeof product.category === "object") {
+      return (product.category._id || product.category.categoryName || "").toLowerCase();
+    }
+    return String(product.category).toLowerCase();
+  };
+
   const filteredProducts = products.filter((product) => {
+    const categoryValue = getCategoryIdOrName(product);
     return (
       product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category?.toLowerCase().includes(searchTerm.toLowerCase())
+      categoryValue.includes(searchTerm.toLowerCase())
     );
   });
 
+  // Category Filtering Saxan (Wuxuu baadhayaa ID-yada iyo Magacyada iyadoo aan loo eegin xaraf weyn ama yar)
   const categorizedProducts = {
     all: filteredProducts,
-    electronics: filteredProducts.filter(
-      (product) => product.category === "electronics" || product.category === "6a7032d8f8ea7fbd1a61e159"
-    ),
-    clothes: filteredProducts.filter(
-      (product) => product.category === "clothes" || product.category === "6a703851f8ea7fbd1a61e15f"
-    ),
-    shoes: filteredProducts.filter(
-      (product) => product.category === "shoes" || product.category === "6a70383ff8ea7fbd1a61e15d"
-    ),
-    others: filteredProducts.filter(
-      (product) => product.category === "others" || product.category === "6a70385cf8ea7fbd1a61e161"
-    ),
+    electronics: filteredProducts.filter((p) => {
+      const cat = getCategoryIdOrName(p);
+      return cat === "electronics" || cat === "6a7032d8f8ea7fbd1a61e159";
+    }),
+    clothes: filteredProducts.filter((p) => {
+      const cat = getCategoryIdOrName(p);
+      return cat === "clothes" || cat === "6a703851f8ea7fbd1a61e15f";
+    }),
+    shoes: filteredProducts.filter((p) => {
+      const cat = getCategoryIdOrName(p);
+      return cat === "shoes" || cat === "6a70383ff8ea7fbd1a61e15d";
+    }),
+    others: filteredProducts.filter((p) => {
+      const cat = getCategoryIdOrName(p);
+      return cat === "others" || cat === "6a70385cf8ea7fbd1a61e161";
+    }),
   };
 
   const navigate = useNavigate();
@@ -70,10 +85,9 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
   return (
     <div className="space-y-4 sm:space-y-6 px-2 sm:px-4 md:px-0">
       
-      {/* 🌟 TOTAL PRODUCTS CARD (NAQSHAD CUSUB) */}
+      {/* TOTAL PRODUCTS CARD */}
       {user?.role === "admin" && (
         <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-4 sm:p-6 shadow-sm hover:shadow-md transition-all">
-          {/* Decorative Subtle Background Shapes */}
           <div className="absolute -right-6 -bottom-6 h-32 w-32 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
           
           <div className="flex items-center justify-between relative z-10">
@@ -115,7 +129,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
         </div>
         <Button 
           onClick={() => navigate("/sales")}
-          className="py-3 sm:py-5 md:py-6 px-4 sm:px-6 text-sm sm:text-base md:text-lg rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md flex items-center justify-center gap-2 whitespace-nowrap h-auto"
+          className="py-3 sm:py-5 md:py-6 px-4 sm:px-6 text-sm sm:text-base md:text-lg rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md flex items-center justify-center gap-2 whitespace-nowrap h-auto cursor-pointer"
         >
           <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
           {user?.role === "admin" ? "All Sales" : "My Sales"}
@@ -124,36 +138,35 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
 
       {/* Tabs */}
       <Tabs defaultValue="all" className="w-full">
-        {/* Scrollable Tabs on mobile */}
         <div className="overflow-x-auto pb-1 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-none">
           <TabsList className="flex sm:grid sm:grid-cols-5 w-max sm:w-full min-w-full">
-            <TabsTrigger value="all" className="flex-1 text-xs sm:text-sm px-3 py-1.5">
+            <TabsTrigger value="all" className="flex-1 text-xs sm:text-sm px-3 py-1.5 cursor-pointer">
               <span>All</span>
               <Badge variant="secondary" className="ml-1.5 text-[10px] sm:text-xs px-1.5 py-0">{categorizedProducts.all.length}</Badge>
             </TabsTrigger>
 
-            <TabsTrigger value="electronics" className="flex-1 text-xs sm:text-sm px-3 py-1.5">
+            <TabsTrigger value="electronics" className="flex-1 text-xs sm:text-sm px-3 py-1.5 cursor-pointer">
               <span>Electronics</span>
               <Badge variant="secondary" className="ml-1.5 text-[10px] sm:text-xs px-1.5 py-0">
                 {categorizedProducts.electronics.length}
               </Badge>
             </TabsTrigger>
 
-            <TabsTrigger value="clothes" className="flex-1 text-xs sm:text-sm px-3 py-1.5">
+            <TabsTrigger value="clothes" className="flex-1 text-xs sm:text-sm px-3 py-1.5 cursor-pointer">
               <span>Clothes</span>
               <Badge variant="secondary" className="ml-1.5 text-[10px] sm:text-xs px-1.5 py-0">
                 {categorizedProducts.clothes.length}
               </Badge>
             </TabsTrigger>
 
-            <TabsTrigger value="shoes" className="flex-1 text-xs sm:text-sm px-3 py-1.5">
+            <TabsTrigger value="shoes" className="flex-1 text-xs sm:text-sm px-3 py-1.5 cursor-pointer">
               <span>Shoes</span>
               <Badge variant="secondary" className="ml-1.5 text-[10px] sm:text-xs px-1.5 py-0">
                 {categorizedProducts.shoes.length}
               </Badge>
             </TabsTrigger>
 
-            <TabsTrigger value="others" className="flex-1 text-xs sm:text-sm px-3 py-1.5">
+            <TabsTrigger value="others" className="flex-1 text-xs sm:text-sm px-3 py-1.5 cursor-pointer">
               <span>Others</span>
               <Badge variant="secondary" className="ml-1.5 text-[10px] sm:text-xs px-1.5 py-0">
                 {categorizedProducts.others.length}
@@ -193,7 +206,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
         <TabsContent value="others" className="mt-4 sm:mt-6">
           <ProductGrid
             products={categorizedProducts.others}
-            emptyMessage="No products found."
+            emptyMessage="No other products found."
           />
         </TabsContent>
       </Tabs>
