@@ -36,7 +36,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
     all: filteredProducts,
     electronics: filteredProducts.filter((p) => {
       const cat = getCategoryIdOrName(p);
-      return cat === "electronics" || cat === "6a7032d8f8ea7fbd1a61e159";
+      return cat === "electronics" || cat === "6a6db3c6f20274d7e9362c34";
     }),
     clothes: filteredProducts.filter((p) => {
       const cat = getCategoryIdOrName(p);
