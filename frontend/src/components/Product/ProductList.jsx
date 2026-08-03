@@ -15,7 +15,6 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
 
   const user = useAuthStore((state) => state.user);
 
-  // Helper function oo si sax ah u ganta magaca category-ga (ID ama String ama Object)
   const getCategoryIdOrName = (product) => {
     if (!product?.category) return "";
     if (typeof product.category === "object") {
@@ -33,7 +32,6 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
     );
   });
 
-  // Category Filtering Saxan (Wuxuu baadhayaa ID-yada iyo Magacyada iyadoo aan loo eegin xaraf weyn ama yar)
   const categorizedProducts = {
     all: filteredProducts,
     electronics: filteredProducts.filter((p) => {
@@ -55,6 +53,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
   };
 
   const navigate = useNavigate();
+
   const ProductGrid = ({ products, emptyMessage }) => {
     if (products.length === 0) {
       return (
@@ -67,7 +66,7 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
     }
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {products.map((product) => (
           <ProductCard
             key={product._id}
@@ -85,7 +84,6 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
   return (
     <div className="space-y-4 sm:space-y-6 px-2 sm:px-4 md:px-0">
       
-      {/* TOTAL PRODUCTS CARD */}
       {user?.role === "admin" && (
         <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-4 sm:p-6 shadow-sm hover:shadow-md transition-all">
           <div className="absolute -right-6 -bottom-6 h-32 w-32 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
@@ -116,7 +114,6 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
         </div>
       )}
 
-      {/* Search and Sales Button */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-full md:max-w-[90%] lg:max-w-[80%] mx-auto">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
@@ -136,7 +133,6 @@ const ProductList = ({ products = [], onEdit, onDelete, onAddToCart, onSalesClic
         </Button>
       </div>
 
-      {/* Tabs */}
       <Tabs defaultValue="all" className="w-full">
         <div className="overflow-x-auto pb-1 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-none">
           <TabsList className="flex sm:grid sm:grid-cols-5 w-max sm:w-full min-w-full">

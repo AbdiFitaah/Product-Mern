@@ -1,6 +1,6 @@
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
-
+const apis= "http://localhost:3000/api"
 const api = axios.create({
   baseURL: "https://product-mern-zc8c.onrender.com/api",
   headers: {
