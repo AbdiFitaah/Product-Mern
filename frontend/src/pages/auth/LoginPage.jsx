@@ -15,7 +15,6 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     const { user, token, setAuth } = useAuthStore()
-    // // State for form values
     const [formValues, setFormValues] = useState({
         email: 'abdifatah@gmail.com',
         password: 'A123456a@'
@@ -89,7 +88,7 @@ const LoginPage = () => {
 
 
     return (
-        <Card className="w-1/3 m-auto mt-40 border-border">
+        <Card className="w-[90%] sm:w-[450px] md:w-1/3 m-auto mt-16 sm:mt-24 md:mt-40 border-border">
             <CardHeader className="space-y-1 pb-4">
                 <CardTitle className="text-xl text-center">Signin</CardTitle>
                 <CardDescription className={"text-center"}>

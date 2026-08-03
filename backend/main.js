@@ -34,7 +34,13 @@ app.use(
   cors({
     origin: process.env.NODE_ENV === "production" 
       ? process.env.CLIENT_URL
-      : ["http://localhost:5173", "https://product-mern-zc8c.onrender.com/api"],
+      : [
+          "http://localhost:5173", 
+          "http://localhost:5000", 
+          "http://localhost:3000", 
+          "https://product-mern-zc8c.onrender.com"
+        ],
+    credentials: true, 
   })
 );
 
@@ -46,14 +52,9 @@ app.use("/api/product", productRoute);
 app.use("/api/sales", salerouter);
 app.use("/api/category", categoryrouter);
 
-// Production Static Files Setup
 if (process.env.NODE_ENV === "production") {
-  // Waxaa loo adeegeyaa frontend Build-ka
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  // Catch-all route oo lagu soo celinayo React/Vite index.html
   app.get(/.*/, (req, res) => {
-    // 👈 Halkan waxaa loo beddelay res.sendFile
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html")); 
   });
 }

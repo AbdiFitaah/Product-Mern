@@ -13,11 +13,10 @@ import { Textarea } from "../ui/textarea";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import api from "../../lib/auth/apiClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -36,6 +35,7 @@ const ProductForm = ({ product, open, onOpenChange }) => {
 
   const [validationError, setValidationError] = useState(null);
   const queryClient = useQueryClient();
+
   const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -167,6 +167,11 @@ const ProductForm = ({ product, open, onOpenChange }) => {
   const isLoading =
     createProductMutation.isPending || updateProductMutation.isPending;
 
+  // 🔑 SHAKIGA HAKAN KA SAX: Magaca category-ga ID-gaas u dhigma soo hel
+  const selectedCategoryObj = categories.find(
+    (cat) => String(cat._id) === String(formValues.category)
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-xl">
@@ -224,6 +229,8 @@ const ProductForm = ({ product, open, onOpenChange }) => {
               required
             />
           </div>
+
+          {/* Category Dropdown (SAXAN) */}
           <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
             {isLoadingCategories ? (
@@ -236,7 +243,10 @@ const ProductForm = ({ product, open, onOpenChange }) => {
                 onValueChange={handleCategoryChange}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a Category" />
+                  <SelectValue placeholder="Select a Category">
+                    {/* Halkan ku muuji magaca haddii la doortay, ama placeholder */}
+                    {selectedCategoryObj ? selectedCategoryObj.categoryName : "Select a Category"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories.length === 0 ? (

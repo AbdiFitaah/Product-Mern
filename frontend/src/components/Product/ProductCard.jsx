@@ -1,51 +1,65 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Edit, Trash2, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useQuery } from "@tanstack/react-query";
 
-const ProductCard = ({ product, onEdit, onDelete, onAddToCart, user }) => {
-  // 1. Data Safety Check
+const ProductCard = ({
+  product,
+  categories = [],
+  onEdit,
+  onDelete,
+  onAddToCart,
+  user,
+}) => {
   if (!product) return null;
 
-  // object of every category id to choose
-  const Electronics = '6a6ca5fbcdbab9525f2b6ed1';
-  const Clothes="6a6ca631cdbab9525f2b6ed3"
-  const Shoes = "6a6ca640cdbab9525f2b6ed5"
-  const Others = "Others6a6ca652cdbab9525f2b6ed7"
+  
+
+
+  const getCategoryName = () => {
+    let productNmae = "Other";
+    if( product.category == "6a7032d8f8ea7fbd1a61e159"){
+      productNmae = "Electronics"
+    }
+    if( product.category == "6a70383ff8ea7fbd1a61e15d"){
+      productNmae = "Shoes"
+    }
+    if( product.category == "6a703851f8ea7fbd1a61e15f"){
+      productNmae = "Clothes"
+    }
+    if( product.category == "6a70385cf8ea7fbd1a61e161"){
+      productNmae = "Others"
+    }
+  
+    return productNmae;  
+
+  };
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    e.stopPropagation(); 
-
-    if (onAddToCart) {
-      console.log("🛒 Adding item to cart:", product);
-      onAddToCart(product);
-    } else {
-      console.error("onAddToCart prop is missing or undefined in ProductCard!");
-    }
+    e.stopPropagation();
+    if (onAddToCart) onAddToCart(product);
   };
 
-  // 3. Safe Delete Handler
   const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (onDelete) onDelete(product);
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    if (onEdit) {
-      onEdit(product);
-    }
+    if (onEdit) onEdit(product);
   };
 
   return (
-    <div className="bg-card border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+    <div className="bg-card border rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between h-full w-full">
       <div>
         {/* Product Image */}
         {product.image && (
-          <div className="relative w-full h-48 mb-4 overflow-hidden rounded-lg bg-muted">
+          <div className="relative w-full h-36 sm:h-44 md:h-48 mb-3 sm:mb-4 overflow-hidden rounded-lg bg-muted">
             <img
               src={product.image}
               alt={product.name || "Product"}
@@ -55,33 +69,31 @@ const ProductCard = ({ product, onEdit, onDelete, onAddToCart, user }) => {
         )}
 
         {/* Category Badge & Title */}
-        <div className="flex items-center justify-between gap-2 mb-2">
-          <h3 className="font-bold text-lg text-foreground line-clamp-1">
+        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-2">
+          <h3 className="font-bold text-base sm:text-lg text-foreground line-clamp-1">
             {product.name || "Unnamed Product"}
           </h3>
-          {product.category && (
-            <Badge variant="outline" className="capitalize text-xs">
-              { product.category == Electronics? "Electronics" : product.category == Clothes  ? "Clothes" :product.category == Shoes ? "Shoes" : product.category == Others ? "Others" : product.category}
-            </Badge>
-          )}
+          <Badge variant="outline" className="capitalize text-[10px] sm:text-xs shrink-0">
+            {getCategoryName()}
+          </Badge>
         </div>
 
         {/* Description */}
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-4">
           {product.description || "No description provided."}
         </p>
       </div>
 
       {/* Footer: Price & Actions */}
-      <div className="pt-4 border-t border-border flex items-center justify-between mt-auto gap-2">
+      <div className="pt-3 sm:pt-4 border-t border-border flex flex-col xs:flex-row items-stretch xs:items-center justify-between mt-auto gap-2.5 sm:gap-2">
         <div>
-          <span className="text-xs text-muted-foreground block">Price</span>
-          <span className="text-xl font-bold text-green-600">
+          <span className="text-[10px] sm:text-xs text-muted-foreground block">Price</span>
+          <span className="text-lg sm:text-xl font-bold text-green-600">
             ${Number(product.price || 0).toFixed(2)}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 w-full xs:w-auto justify-end">
           {/* Admin Buttons (Edit / Delete) */}
           {user?.role === "admin" && (
             <>
@@ -92,8 +104,9 @@ const ProductCard = ({ product, onEdit, onDelete, onAddToCart, user }) => {
                   size="icon"
                   onClick={handleEdit}
                   title="Edit Product"
+                  className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </Button>
               )}
               {onDelete && (
@@ -101,11 +114,11 @@ const ProductCard = ({ product, onEdit, onDelete, onAddToCart, user }) => {
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 w-8 sm:h-9 sm:w-9 shrink-0"
                   onClick={handleDelete}
                   title="Delete Product"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </Button>
               )}
             </>
@@ -115,10 +128,11 @@ const ProductCard = ({ product, onEdit, onDelete, onAddToCart, user }) => {
           <Button
             type="button"
             onClick={handleAddToCart}
-            className="flex items-center gap-2 cursor-pointer"
+            size="sm"
+            className="flex-1 xs:flex-none items-center justify-center gap-1.5 sm:gap-2 cursor-pointer text-xs sm:text-sm h-8 sm:h-9 px-2.5 sm:px-3"
           >
-            <ShoppingCart className="h-4 w-4" />
-            Add to Cart
+            <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="whitespace-nowrap">Add to Cart</span>
           </Button>
         </div>
       </div>
